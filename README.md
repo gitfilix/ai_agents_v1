@@ -35,15 +35,30 @@ https://docs.astral.sh/uv/getting-started/installation/#standalone-installer
 
 
 
-Prompt engineering tip:
+## Prompt engineering tip:
 
-<em>use XML delimiters</em>
+1. <em>use XML delimiters</em>
 this helps the LLM- model to understand better the difference between prompts and the input
 
 ```
     <topic>
     {topic}
     </topic>
+```
+
+2. <em>Few shot prompting</em>
+- provide some samples of topic and result so the quality increases
+- use xml'-ish structure for this. 
+- Here are some examples of good X posts:
+```
+    <example-1>
+        <topic>Product Launch new website</topic>
+        <generated-post>
+            Just launched our new product! Check it out on our website. 🚀 #NewProduct #LaunchDay
+            Thank you for your support! 🙌
+            We're excited to hear your feedback. 😊
+        </generated-post>
+    </example-1>
 ```
 
 
@@ -53,3 +68,5 @@ this helps the LLM- model to understand better the difference between prompts an
 - `uv sync` after pip install sometimes helps
 - un-install and re-install libraries helps.
 - de-activate all python extensions in vscode
+- clean uv cache with: `uv cache prune` && `uv cache clean`.
+- re-install python with uv: `uv python install --reinstall`
