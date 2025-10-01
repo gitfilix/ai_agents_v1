@@ -1,11 +1,17 @@
 import os
 # run "uv sync" to install dependencies
-import requests
+from openai import OpenAI
 from dotenv import load_dotenv
 # load environment variables from .env file
 load_dotenv()
 
-OPEN_API_KEY_DEMO = os.getenv('OPEN_API_KEY')
+# Initialize the OpenAI client
+client = OpenAI(
+    api_key=os.getenv('OPEN_API_KEY')
+)
+# Set the OpenAI API key
+# openai.api_key = os.getenv('OPEN_API_KEY')
+
 
 def generate_x_post(topic: str) -> str:
     prompt = f"""
@@ -18,23 +24,13 @@ def generate_x_post(topic: str) -> str:
     {topic}
     </topic>
     """
-    payload = {
-        "model": "gpt-4o",
-        "input": prompt
-    }
-    # call to AI LLM to generate X post
-    response = requests.post(
-        "https://api.openai.com/v1/responses", 
-        json=payload,
-        headers={
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {OPEN_API_KEY_DEMO}"
-            }
+    response = client.responses.create(
+        model="gpt-4o",
+        input=prompt
     )
-    print(f"Response status code: {response.status_code}")
-    # print(f"Response content: {response.content}")
-    response_text = response.json().get('output', [{}])[0].get("content", [{}])[0].get("text", "")
-    return response_text.strip()
+
+
+    return response.output_text
 
 
 def main():
